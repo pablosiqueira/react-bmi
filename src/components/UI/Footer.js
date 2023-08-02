@@ -1,6 +1,6 @@
 import React from 'react'
 import styles from './Footer.module.css'
-import Button from 'react-bootstrap/esm/Button'
+import Button from 'react-bootstrap/Button'
 import {TbMail, TbBrandLinkedin, TbNews, TbBrandGithub} from 'react-icons/tb'
 
 const Footer = () => {

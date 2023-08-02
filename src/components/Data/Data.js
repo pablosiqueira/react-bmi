@@ -2,21 +2,10 @@ import React, {useState, useEffect} from 'react';
 import Form from './Form';
 import Search from './Search';
 import PeopleTable from './PeopleTable';
-import Navigation from '../UI/Navigation';
-import Footer from '../UI/Footer';
-import Introduction from './Introduction';
 import ClassificationTable from './Classification-Table';
 
-const InitialList = [
-  {id: 1, name: 'Jack', weight: 83, height: 1.85, bmi: 24.25, classification: 'Normal'},
-  {id:2, name: 'Natalie', weight: 42, height: 1.56, bmi: 17.26, classification: 'Under-weight'}
-]
-
-function Data() {
-  const [people, setPeople] = useState(InitialList)
-  const [filtered, setFiltered] = useState(InitialList)
-  let searchWord = ''
-
+function Data(props) {
+  //const initial = props.InitialList ? props.InitialList.map(item => addItemHandler(item)) : []
   const calculateBmiAndClass = (weight, height) => {
     const bmi = (weight/(height * height)).toFixed(2)
     let classification = ''
@@ -38,17 +27,42 @@ function Data() {
     }
     return {bmi,classification}
   }
+  let initial = []
 
-  const addItemHandler = (newItem) => {
+  const initialClassification = () => {
+    if(props.InitialList){
+      props.InitialList.map(item => {
+        const bmiClass = calculateBmiAndClass(item.weight, item.height)
+        const itemToAdd = {
+          id: Math.random(),
+          ...item,
+          bmi: bmiClass.bmi,
+          classification: bmiClass.classification
+        }
+        return initial.push(itemToAdd)
+      })
+    }
+  }
+
+  initialClassification()
+  
+
+  const [people, setPeople] = useState(initial)
+  const [filtered, setFiltered] = useState(initial)
+  let searchWord = ''
+
+  
+
+  const addItemHandler = (newItem,initial) => {
     const bmiClass = calculateBmiAndClass(newItem.weight, newItem.height)
     const itemToAdd = {
       ...newItem,
       bmi: bmiClass.bmi,
       classification: bmiClass.classification
     }
-    setPeople((prevList) => {
-      return [...prevList, itemToAdd]
-    })
+      setPeople((prevList) => {
+        return [...prevList, itemToAdd]
+      })
   }
 
   const removeItemHandler = (id) => {
@@ -73,17 +87,14 @@ function Data() {
   },[people, searchWord])
 
   return (
-    <div className="App">
-      <Navigation />
-      <Introduction />
+    <>
       <section>
         <Search onSetSearchWord={setSearchWord} searchValue={searchWord}/>
         <PeopleTable data={filtered} onRemoveItem={removeItemHandler}/>
       </section>
       <ClassificationTable />
       <Form onAddItem={addItemHandler}/>
-      <Footer />
-    </div>
+    </>
   );
 }
 

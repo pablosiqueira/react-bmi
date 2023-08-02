@@ -5,9 +5,10 @@ import Button from 'react-bootstrap/Button';
 
 const PeopleTable = props => {
   const tbodyAlign = {verticalAlign: 'middle'}
+  console.log(props.data)
   return (
     <section className='mx-4'>
-      <Table striped bordered hover responsive>
+      <Table striped bordered hover responsive id="peopleTable">
         <thead>
           <tr>
             <th>Name</th>
@@ -27,9 +28,9 @@ const PeopleTable = props => {
               <td>{person.name}</td>
               <td>{person.weight}</td>
               <td>{person.height}</td>
-              <td>{person.bmi}</td>
-              <td>{person.classification}</td>
-              <td className='text-center'><Button variant="danger" onClick={() => props.onRemoveItem(person.id)}><FaTrashAlt /></Button></td>
+              <td data-testid="bmi">{person.bmi}</td>
+              <td data-testid="classification">{person.classification}</td>
+              <td className='text-center'><Button variant="danger" data-testid="remove" onClick={() => props.onRemoveItem(person.id)}><FaTrashAlt /></Button></td>
             </tr>
           ))}
         </tbody>
